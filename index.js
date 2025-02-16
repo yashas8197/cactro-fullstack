@@ -1,5 +1,6 @@
 import express from "express";
 import Poll from "./models/poll.model.js";
+import cors from "cors";
 import initializeDatabase from "./connections/db.connect.js";
 
 const app = express();
