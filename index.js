@@ -2,7 +2,6 @@ import express from "express";
 import Poll from "./models/poll.model.js";
 import cors from "cors";
 import initializeDatabase from "./connections/db.connect.js";
-
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -46,6 +45,20 @@ app.get("/polls/:pollId", async (req, res) => {
 
   try {
     const poll = await Poll.findById(pollId);
+    if (!poll) {
+      return res.status(404).json({ error: "Poll not found" });
+    }
+    res.status(200).json(poll);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.get("/polls", async (req, res) => {
+  const { pollId } = req.params;
+
+  try {
+    const poll = await Poll.find();
     if (!poll) {
       return res.status(404).json({ error: "Poll not found" });
     }
